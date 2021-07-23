@@ -1,3 +1,21 @@
+<?php
+session_start();
+require '../Models/connection.php';
+
+if (isset($_SESSION['user_id'])) {
+    $compareWithDatabase = $connectionTry->prepare('SELECT id, email, password FROM users WHERE id=:id');
+    $compareWithDatabase->bindParam(':id', $_SESSION['user_id']);
+    $compareWithDatabase->execute();
+    $result = $compareWithDatabase->fetch(PDO::FETCH_ASSOC);
+    $message = '';
+    $user = null;
+
+    if (count($result) > 0) {
+        $user = $result;
+    }
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -14,29 +32,41 @@
 <body
     style="background-image: url('https://s03.s3c.es/imag/_v0/770x420/9/1/9/construccion-planos-casco-obra-770.jpg'); background-repeat: no-repeat; background-size: cover; background-color: rgb(0, 0, 0) ;">
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo03"
-            aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <a class="navbar-brand" href="home.php"><img
+
+        <a class="navbar-brand" href="index.php"><img
                 src="https://www.campos-chile.cl/wp-content/uploads/2021/04/logo.png" alt="Campos Chile"
                 style="height: 100px;" class="p-3"></a>
 
-        <div class="collapse navbar-collapse d-flex justify-content-end" id="navbarTogglerDemo03">
+        <?php if (empty($user)) : ?>
+        <div class="collapse navbar-collapse d-flex justify-content-end">
             <ul class="navbar-nav p-2 mt-2 mt-lg-0 ">
                 <li class="nav-item mx-3">
                     <a class="" href="login.php">
-                        <button class="btn btn-outline-secondary">Iniciar
+                        <button class="btn btn-outline-primary">Iniciar
                             Sesion</button>
                     </a>
                 </li>
                 <li class="nav-item ">
                     <a href="register.php">
-                        <button class="btn btn-outline-secondary">Registrarse</button>
+                        <button class="btn btn-outline-primary">Registrarse</button>
                     </a>
                 </li>
             </ul>
         </div>
+        <?php else : ?>
+
+        <div class="collapse navbar-collapse d-flex justify-content-end">
+            <ul class="navbar-nav p-2 mt-2 mt-lg-0 ">
+                <li class="nav-item  text-white m-3 ">
+                    <br class="">Bienvenido <?= $user['email'] ?>
+                    <a href="logOut.php">
+                        <button class="btn btn-outline-primary mx-3">Salir</button>
+                    </a>
+                </li>
+
+            </ul>
+        </div>
+        <?php endif; ?>
     </nav>
 
     <div class="container">
@@ -48,8 +78,9 @@
                         <h1 class="card-title">Bienvenido al sistema de control de usuarios de constructora campos
                             de
                             chile</h1>
-                        <p class="card-text">En esta pagina tendra acceso a suscribirse como usuario y posteriormente
-                            iniciar sesion en nuestro sistema</p>
+                        <p class="card-text"><b>En esta pagina tendra acceso a suscribirse como usuario y posteriormente
+                                iniciar sesion en nuestro sistema</b></p>
+                        <?php if (!empty($user)) : ?>
                         <div class="my-5  ">
                             <table class="table table-dark ">
                                 <h3 class="text-center"><b>Lista de usuarios registrados</b></h3>
@@ -75,6 +106,7 @@
                                 </tbody>
                             </table>
                         </div>
+                        <?php endif; ?>
                     </div>
                 </div>
             </div>
