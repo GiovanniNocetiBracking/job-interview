@@ -15,28 +15,9 @@
 <body
     style="background-image: url('https://www.esan.edu.pe/apuntes-empresariales/2018/08/08/1500x844_sgsi.jpg'); background-repeat: no-repeat; background-size: cover;background-color: rgb(0, 0, 0) ;">
 
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-
-        <a class="navbar-brand" href="/entrevista-tecnica-auth"><img
-                src="https://www.campos-chile.cl/wp-content/uploads/2021/04/logo.png" alt="Campos Chile"
-                style="height: 100px;" class="p-3"></a>
-
-        <div class="collapse navbar-collapse d-flex justify-content-end">
-            <ul class="navbar-nav p-2 mt-2 mt-lg-0 ">
-                <li class="nav-item mx-3">
-                    <a class="" href="<?php echo URLROOT; ?>/users/login">
-                        <button class="btn btn-outline-primary">Iniciar
-                            Sesion</button>
-                    </a>
-                </li>
-                <li class="nav-item ">
-                    <a href="<?php echo URLROOT; ?>/users/register">
-                        <button class="btn btn-outline-primary">Registrarse</button>
-                    </a>
-                </li>
-            </ul>
-        </div>
-    </nav>
+    <?php
+    require APPROOT . '/views/includes/navigation.php';
+    ?>
 
     <div class="container d-flex justify-content-center my-5">
         <div class="card text-center w-75" style="background-color: rgba(245, 245, 245, 0.4);">
@@ -49,7 +30,7 @@
                         <div class="form-group row ">
                             <label for="staticEmail" class="col-sm-2 col-form-label"><b>Nombre de usuario</b></label>
                             <div class="col-sm-10">
-                                <input type="text" class="form-control" id="email" name="username"
+                                <input type="text" class="form-control" id="username" name="username"
                                     placeholder="nombre de usuario">
                             </div>
                         </div>
